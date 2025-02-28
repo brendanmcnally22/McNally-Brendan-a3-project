@@ -11,7 +11,7 @@ namespace MohawkGame2D;
 public class Game
 {
     // Place your variables here:
-
+   
 
 
     /// <summary>
@@ -19,7 +19,7 @@ public class Game
     /// </summary>
     public void Setup()
     {
-        Window.SetSize(800,600)
+        Window.SetSize(800, 600);
     }
 
     /// <summary>
@@ -27,7 +27,8 @@ public class Game
     /// </summary>
     public void Update()
     {
-
+        Window.ClearBackground(Color.OffWhite);
+       
     }
 }
 
