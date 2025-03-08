@@ -6,10 +6,10 @@ namespace MohawkGame2D
 {
     public class Game
     {
-        private Level level1;
-        private Level level2;
-        private Level level3;
-        enum gamestate
+        private Level Level1;
+        private Level Level2;
+        private Level Level3;
+        enum gamestate // An Enumerator to make sure we Store infomation in these screens 
         {
             Menu,
             Level1,
@@ -83,7 +83,7 @@ namespace MohawkGame2D
         {
             Window.ClearBackground(Color.Gray);
 
-            switch (currentState)
+            switch (currentState) // Switch to change our current State of the game.
             {
                 case gamestate.Menu:
                     DrawMenu();
@@ -98,12 +98,7 @@ namespace MohawkGame2D
                     // Collisions
                     ApplyCollisions();
 
-                    // Drawing
                     borders.DrawBorders();
-                    foreach (Platform platform in platforms)
-                    {
-                        platform.DrawPlatform();
-                    }
                     player.DrawPlayer();
                     DrawCollectible();
                     DrawHazard();
@@ -111,6 +106,21 @@ namespace MohawkGame2D
                     DrawUI();
 
                     break;
+
+                case gamestate.Level2:
+                    player.HandleInput();
+                    player.Update();
+                    ApplyCollisions();
+
+                    borders.DrawBorders();
+                    player.DrawPlayer();
+                    DrawCollectible();
+                    DrawHazard();
+                    DrawExit();
+                    DrawUI();
+                    DrawPlatforms(Platform.Level2Platforms);
+                    break;
+                    //level 2 logic! 
 
                 case gamestate.Gameover:
                     DrawGameOverScreen();
@@ -254,8 +264,14 @@ namespace MohawkGame2D
         }
 
         //--- DRAWING HELPERS ---//
+        private void DrawPlatforms(Platform[] platforms)
+        {
+            foreach (Platform platform in platforms)
+            {
+                platform.DrawPlatform();
+            }
+        }
 
-    
         private void DrawCollectible()
         {
             if (!hasCollected)
