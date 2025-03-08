@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Numerics;
+using MohawkGame2D;
 
 namespace MohawkGame2D
 {
@@ -18,32 +19,31 @@ namespace MohawkGame2D
             Gameover
         }
         
+
         // States
         private gamestate currentState = gamestate.Menu; // start the game in the main menu
+
 
         // Managers / Helpers
         private MusicManager musicManager;
         private Borders borders;
         private Player player;
        
+
         // Some game variables
         private bool hasCollected = false;
         private int score = 0;
 
-        // Collectible
-        private Vector2 collectiblePosition = new Vector2(400, 300);
-        private float collectibleSize = 20;
-
-        // Hazard
-        private Vector2 hazardPosition = new Vector2(500, 500);
-        private Vector2 hazardSize = new Vector2(50, 50);
 
         // Exit
         private Vector2 exitPosition = new Vector2(720, 420);
         private Vector2 exitSize = new Vector2(40, 40);
 
 
+        //Array for Platforms, Hazards and Collectibles
         private Platform[] platforms = new Platform[10];
+        private Hazard[] hazards;
+        private Collectible[] collectibles;
 
 
 
@@ -64,10 +64,12 @@ namespace MohawkGame2D
             musicManager = new MusicManager(songPaths, songTitles);
             musicManager.PlayMusic(0);
 
-            // Create other helpers
-            borders = new Borders();
+        // Create other helpers
+        borders = new Borders();
             player = new Player();
             platforms = Platform.InitializePlatforms(1);  // Load up them platforms! 
+            collectibles = Collectible.InitializeCollectibles(1); // Collectibles
+            hazards = Hazard.InitializeHazards(1);          // <--- Initialize hazards!
 
         }
 
@@ -95,8 +97,8 @@ namespace MohawkGame2D
                     DrawPlatforms(platforms);
                     borders.DrawBorders();
                     player.DrawPlayer();
-                    DrawCollectible();
-                    DrawHazard();
+                    DrawCollectibles();
+                    DrawHazards();
                     DrawExit();
                     DrawUI();
 
@@ -109,11 +111,12 @@ namespace MohawkGame2D
 
                     borders.DrawBorders();
                     player.DrawPlayer();
-                    DrawCollectible();
-                    DrawHazard();
+                    DrawCollectibles();
+                    DrawHazards();
                     DrawExit();
                     DrawUI();
                     platforms = Platform.InitializePlatforms(2);
+                    DrawPlatforms(platforms);
                     break;
                     //level 2 logic! 
 
@@ -190,30 +193,69 @@ namespace MohawkGame2D
             // Platform collision
             CheckPlatformCollision();
 
-            // Hazard collision
-            if (Vector2.Distance(player.Position, hazardPosition) < 30)
+            // Hazard collisions (loop through each hazard)
+            foreach (Hazard hazard in hazards)
             {
-                player.Health -= 10;
-                if (player.Health <= 0)
+                if (IsColliding(player.Position, player.Width, player.Height, hazard.Position, hazard.Size))
                 {
-                    player.Health = 0;
+                    player.Health -= 10;
+                    if (player.Health <= 0)
+                    {
+                        player.Health = 0;
+                        currentState = gamestate.Gameover;
+                    }
+                }
+            }
+
+            // Collectible collisions (loop through each collectible)
+            for (int i = 0; i < collectibles.Length; i++)
+            {
+                Collectible col = collectibles[i];
+                if (col != null && IsColliding(player.Position, player.Width, player.Height, col.Position, new Vector2(col.Size * 2, col.Size * 2)))
+                {
+                    score++;
+                    player.Health += 50;
+                    // Remove collectible after collection
+                    collectibles[i] = null;
+                }
+            }
+
+            // Exit collision: advance level or end game
+            if (Vector2.Distance(player.Position, exitPosition) < 30)
+            {
+                if (currentState == gamestate.Level1)
+                {
+                    // Transition from Level1 to Level2
+                    currentState = gamestate.Level2;
+                    platforms = Platform.InitializePlatforms(2);
+                    hazards = Hazard.InitializeHazards(2);
+                    collectibles = Collectible.InitializeCollectibles(2);
+                    player.Position = new Vector2(100, 500); // Reset player starting position if needed
+                }
+                else if (currentState == gamestate.Level2)
+                {
+                    // Transition from Level2 to Level3
+                    currentState = gamestate.Level3;
+                    platforms = Platform.InitializePlatforms(3);
+                    hazards = Hazard.InitializeHazards(3);
+                    collectibles = Collectible.InitializeCollectibles(3);
+                    player.Position = new Vector2(100, 500);
+                }
+                else if (currentState == gamestate.Level3)
+                {
+                    // Final exit: game over screen
                     currentState = gamestate.Gameover;
                 }
             }
 
-            // Collectible collision
-            if (!hasCollected && Vector2.Distance(player.Position, collectiblePosition) < 30)
-            {
-                hasCollected = true;
-                score++;
-                player.Health += 50;
-            }
+        }
 
-            // Exit collision
-            if (Vector2.Distance(player.Position, exitPosition) < 30)
-            {
-                currentState = gamestate.Gameover;
-            }
+        private bool IsColliding(Vector2 posA, float widthA, float heightA, Vector2 posB, Vector2 sizeB)
+        {
+            return posA.X < posB.X + sizeB.X &&
+                   posA.X + widthA > posB.X &&
+                   posA.Y < posB.Y + sizeB.Y &&
+                   posA.Y + heightA > posB.Y;
         }
 
         private void CheckPlatformCollision()
@@ -260,19 +302,22 @@ namespace MohawkGame2D
             }
         }
 
-        private void DrawCollectible()
+        private void DrawCollectibles()
         {
-            if (!hasCollected)
+            foreach (Collectible col in collectibles)
             {
-                Draw.FillColor = Color.Yellow;
-                Draw.Circle(collectiblePosition, collectibleSize);
+                if (col != null)
+                {
+                    col.DrawCollectible();
+                }
             }
         }
-
-        private void DrawHazard()
+        private void DrawHazards()
         {
-            Draw.FillColor = Color.Magenta;
-            Draw.Rectangle(hazardPosition, hazardSize);
+            foreach (Hazard hazard in hazards)
+            {
+                hazard.DrawHazard();
+            }
         }
 
         private void DrawExit()
@@ -296,4 +341,6 @@ namespace MohawkGame2D
         }
     }
 }
+
+
 
