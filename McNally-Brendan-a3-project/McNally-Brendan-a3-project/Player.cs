@@ -13,7 +13,7 @@ namespace MohawkGame2D
 
         // For the trail effect
         private Vector2[] trailPositions;
-        private int trailSize = 10;
+        private int trailSize = 50;
         private Color playerColor = Color.Blue;
 
         public Player()
@@ -46,7 +46,7 @@ namespace MohawkGame2D
             // Jump
             if (Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) && !IsJumping)
             {
-                Velocity.Y = -25;
+                Velocity.Y = -20;
                 IsJumping = true;
             }
         }
@@ -75,7 +75,7 @@ namespace MohawkGame2D
                     playerColor.B / 255f,
                     alpha
                 );
-                Draw.Circle(trailPositions[i], 10 - i * 0.5f);
+                Draw.Square(trailPositions[i], 10 - i * 0.5f);
             }
         }
     }

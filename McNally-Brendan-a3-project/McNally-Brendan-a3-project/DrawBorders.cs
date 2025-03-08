@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Numerics;
-
-
 namespace MohawkGame2D;
-
-
-
     public class Borders
     {
         // Positions and sizes for each border

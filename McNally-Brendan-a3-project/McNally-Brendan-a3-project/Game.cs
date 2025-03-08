@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Numerics;
 
 namespace MohawkGame2D
 {
     public class Game
     {
+        private Level level1;
+        private Level level2;
+        private Level level3;
         enum gamestate
         {
             Menu,
@@ -13,7 +17,7 @@ namespace MohawkGame2D
             Level3,
             Gameover
         }
-
+        
         // States
         private gamestate currentState = gamestate.Menu; // start the game in the main menu
 
@@ -38,11 +42,11 @@ namespace MohawkGame2D
         private Vector2 exitPosition = new Vector2(720, 420);
         private Vector2 exitSize = new Vector2(40, 40);
 
-        // Platform
-        private Vector2 platformPosition = new Vector2(150, 450);
-        private Vector2 platformSize = new Vector2(100, 50);
 
-        private LevelData levelData;
+        private Platform[] platforms;
+
+
+
         public void Setup()
         {
             // Window settings
@@ -63,7 +67,16 @@ namespace MohawkGame2D
             // Create other helpers
             borders = new Borders();
             player = new Player();
-            levelData = new LevelData();
+
+            platforms = new Platform[]
+        {
+            new Platform(new Vector2(150, 450), new Vector2(100, 50)),
+            new Platform(new Vector2(300, 400), new Vector2(120, 50)),
+            new Platform(new Vector2(500, 350), new Vector2(150, 50))
+        };
+
+           
+
         }
 
         public void Update(float deltaTime = 0.016f)
@@ -87,7 +100,10 @@ namespace MohawkGame2D
 
                     // Drawing
                     borders.DrawBorders();
-                    DrawPlatform();
+                    foreach (Platform platform in platforms)
+                    {
+                        platform.DrawPlatform();
+                    }
                     player.DrawPlayer();
                     DrawCollectible();
                     DrawHazard();
@@ -203,37 +219,43 @@ namespace MohawkGame2D
             float playerLeft = player.Position.X;
             float playerRight = player.Position.X + player.Width;
 
-            // Platform edges
-            float platTop = platformPosition.Y;
-            float platBottom = platformPosition.Y + platformSize.Y;
-            float platLeft = platformPosition.X;
-            float platRight = platformPosition.X + platformSize.X;
-
-            bool isFallingOntoPlatform =
-                playerBottom >= platTop &&
-                playerTop < platTop &&
-                player.Velocity.Y > 0;
-
-            bool isWithinPlatformWidth =
-                playerRight > platLeft &&
-                playerLeft < platRight;
-
-            if (isFallingOntoPlatform && isWithinPlatformWidth)
+            foreach (Platform platform in platforms)
             {
-                player.Position = new Vector2(player.Position.X, platTop - player.Height);
-                player.Velocity = new Vector2(player.Velocity.X, 0);
-                player.IsJumping = false;
+                float platTop = platform.Position.Y;
+                float platBottom = platform.Position.Y + platform.Size.Y;
+                float platLeft = platform.Position.X;
+                float platRight = platform.Position.X + platform.Size.X;
+
+                // Now you can use these values for collision detection or other logic
+                bool isFallingOntoPlatform =
+          playerBottom >= platTop &&
+          playerTop < platTop &&
+          player.Velocity.Y > 0;
+
+                bool isWithinPlatformWidth =
+                    playerRight > platLeft &&
+                    playerLeft < platRight;
+
+                if (isFallingOntoPlatform && isWithinPlatformWidth)
+                {
+                    player.Position = new Vector2(player.Position.X, platTop - player.Height);
+                    player.Velocity = new Vector2(player.Velocity.X, 0);
+                    player.IsJumping = false;
+                }
+
+              
+
             }
+
+
+
+
+
         }
 
         //--- DRAWING HELPERS ---//
 
-        private void DrawPlatform()
-        {
-            Draw.FillColor = Color.DarkGray;
-            Draw.Rectangle(platformPosition, platformSize);
-        }
-
+    
         private void DrawCollectible()
         {
             if (!hasCollected)
