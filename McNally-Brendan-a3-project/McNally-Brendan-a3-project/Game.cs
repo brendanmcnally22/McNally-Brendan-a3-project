@@ -43,7 +43,7 @@ namespace MohawkGame2D
         private Vector2 exitSize = new Vector2(40, 40);
 
 
-        private Platform[] platforms;
+        private Platform[] platforms = new Platform[10];
 
 
 
@@ -67,15 +67,7 @@ namespace MohawkGame2D
             // Create other helpers
             borders = new Borders();
             player = new Player();
-
-            platforms = new Platform[]
-        {
-            new Platform(new Vector2(150, 450), new Vector2(100, 50)),
-            new Platform(new Vector2(300, 400), new Vector2(120, 50)),
-            new Platform(new Vector2(500, 350), new Vector2(150, 50))
-        };
-
-           
+            platforms = Platform.InitializePlatforms(1);  // Load up them platforms! 
 
         }
 
@@ -98,6 +90,9 @@ namespace MohawkGame2D
                     // Collisions
                     ApplyCollisions();
 
+                    // Drawing
+                    platforms = Platform.InitializePlatforms(1);
+                    DrawPlatforms(platforms);
                     borders.DrawBorders();
                     player.DrawPlayer();
                     DrawCollectible();
@@ -118,7 +113,7 @@ namespace MohawkGame2D
                     DrawHazard();
                     DrawExit();
                     DrawUI();
-                    DrawPlatforms(Platform.Level2Platforms);
+                    platforms = Platform.InitializePlatforms(2);
                     break;
                     //level 2 logic! 
 
@@ -229,18 +224,19 @@ namespace MohawkGame2D
             float playerLeft = player.Position.X;
             float playerRight = player.Position.X + player.Width;
 
+            // Iterate over the platforms
             foreach (Platform platform in platforms)
             {
+                // Platform edges
                 float platTop = platform.Position.Y;
                 float platBottom = platform.Position.Y + platform.Size.Y;
                 float platLeft = platform.Position.X;
                 float platRight = platform.Position.X + platform.Size.X;
 
-                // Now you can use these values for collision detection or other logic
                 bool isFallingOntoPlatform =
-          playerBottom >= platTop &&
-          playerTop < platTop &&
-          player.Velocity.Y > 0;
+                    playerBottom >= platTop &&
+                    playerTop < platTop &&
+                    player.Velocity.Y > 0;
 
                 bool isWithinPlatformWidth =
                     playerRight > platLeft &&
@@ -252,15 +248,7 @@ namespace MohawkGame2D
                     player.Velocity = new Vector2(player.Velocity.X, 0);
                     player.IsJumping = false;
                 }
-
-              
-
             }
-
-
-
-
-
         }
 
         //--- DRAWING HELPERS ---//
