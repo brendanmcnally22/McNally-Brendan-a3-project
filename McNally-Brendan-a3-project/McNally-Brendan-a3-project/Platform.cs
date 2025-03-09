@@ -1,7 +1,7 @@
 ﻿using MohawkGame2D;
 using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+
 
 public class Platform
 {
@@ -10,9 +10,10 @@ public class Platform
     public Vector2 OriginalPosition { get; private set; }
 
     // Shake effect parameters.
-    private float shakeAmplitude = 2.0f; // Maximum offset in pixels.
-    private float shakeFrequency = 5.0f; // Oscillation speed.
+    private float shakeAmplitude = 5.0f; // Maximum offset in pixels.
+    private float shakeFrequency = 10.0f; // Oscillation speed.
     private bool isShaking = false;      // Determines if shaking is active.
+    private bool isMoving = false;
 
     public Platform(Vector2 position, Vector2 size)
     {
@@ -30,13 +31,17 @@ public class Platform
     {
         isShaking = true;
     }
-
-    // Call this method to stop the shake effect.
-    public void StopShaking()
+    public void StartMoving()
     {
-        isShaking = false;
+        isMoving = true;
+    }
+
+    public void StopMoving()
+    {
+        isMoving = false;
         Position = OriginalPosition;
     }
+
     public void Update(float totalTime)
     {
         if (isShaking)
@@ -45,6 +50,12 @@ public class Platform
             float offsetX = (float)(Math.Sin(totalTime * shakeFrequency) * shakeAmplitude);
             float offsetY = (float)(Math.Cos(totalTime * shakeFrequency) * shakeAmplitude);
             Position = OriginalPosition + new Vector2(offsetX, offsetY);
+        }
+        else if (isMoving)
+        {
+            // Move horizontally only.
+            float offsetX = (float)(Math.Sin(totalTime * shakeFrequency) * shakeAmplitude);
+            Position = OriginalPosition + new Vector2(offsetX, 0);
         }
         else
         {
@@ -86,7 +97,7 @@ public class Platform
                     new Platform(new Vector2(600, 200), new Vector2(100, 50)),
                    
                 };
-                platforms[1].StartShaking();
+                platforms[4].StartMoving();
                 return platforms;
             default:
                 return new Platform[0]; // Return an empty array for invalid level

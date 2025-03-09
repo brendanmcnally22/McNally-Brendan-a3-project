@@ -41,26 +41,30 @@ namespace MohawkGame2D
         private Hazard[] hazards;
         private Collectible[] collectibles;
 
+        private float totalElapsedTime = 0;
+        
 
 
         public void Setup()
         {
             // Window settings
             Window.SetSize(800, 600);
-            Window.SetTitle("Level One Test");
+            Window.SetTitle("Frisson");
 
             // Initialize music
             string[] songPaths = {
                 "C:\\Users\\brend\\Downloads\\Come as you Are.mp3",
+                "C:\\Users\\brend\\Downloads\\Real Gone.mp3",
                 "C:\\Users\\brend\\Downloads\\The Moment.mp3",
-                "C:\\Users\\brend\\Downloads\\Real Gone.mp3"
+                
             };
-            string[] songTitles = { "Come as You Are", "The Moment", "Real Gone" };
+            string[] songTitles = { "Come as You Are", "Real Gone" , "The Moment" };
 
             musicManager = new MusicManager(songPaths, songTitles);
             musicManager.PlayMusic(0);
 
         // Create other helpers
+
             borders = new Borders();
             player = new Player();
             platforms = Platform.InitializePlatforms(1);  // Load up them platforms! 
@@ -73,6 +77,8 @@ namespace MohawkGame2D
         {
             Window.ClearBackground(Color.Gray);
 
+            totalElapsedTime += deltaTime;
+
             switch (currentState) // Switch to change our current State of the game.
             {
                 case gamestate.Menu:
@@ -84,10 +90,8 @@ namespace MohawkGame2D
                     // Update logic
                     player.HandleInput();
                     player.Update();
-
                     // Collisions
                     ApplyCollisions();
-
                     // Drawing
                     platforms = Platform.InitializePlatforms(1);
                     DrawPlatforms(platforms);
@@ -98,13 +102,25 @@ namespace MohawkGame2D
                     DrawExit();
                     DrawUI();
 
+                    foreach (Collectible col in collectibles) //collisions
+                    {
+                        if (col != null)
+                        {
+                            col.Update(totalElapsedTime);
+                        }
+                    }
+
+                    foreach (Platform p in platforms)
+                    {
+                        p.Update(totalElapsedTime);
+                    }
+
                     break;
 
                 case gamestate.Level2:
                     player.HandleInput();
                     player.Update();
                     ApplyCollisions();
-
                     borders.DrawBorders();
                     player.DrawPlayer();
                     DrawCollectibles();
@@ -113,6 +129,20 @@ namespace MohawkGame2D
                     DrawUI();
                     platforms = Platform.InitializePlatforms(2);
                     DrawPlatforms(platforms);
+
+                    foreach (Collectible col in collectibles) //collisions
+                    {
+                        if (col != null)
+                        {
+                            col.Update(totalElapsedTime);
+                        }
+                    }
+
+                    foreach (Platform p in platforms)
+                    {
+                        p.Update(totalElapsedTime);
+                    }
+
                     break;
                 //level 2 logic! 
 
@@ -128,11 +158,27 @@ namespace MohawkGame2D
                     DrawUI();
                     platforms = Platform.InitializePlatforms(3);
                     DrawPlatforms(platforms);
+                    
+                    foreach (Collectible col in collectibles) //collisions
+                    {
+                        if (col != null)
+                        {
+                            col.Update(totalElapsedTime);
+                        }
+                    }
+
+                    foreach (Platform p in platforms)
+                    {
+                        p.Update(totalElapsedTime);
+                    }
+
                     break;
+
                 case gamestate.Gameover:
                     DrawGameOverScreen();
                     HandleGameOverInput();
                     break;
+
             }
         }
 
@@ -176,6 +222,9 @@ namespace MohawkGame2D
             player.Health = 100;
             player.Position = new Vector2(100, 500);
             currentState = gamestate.Level1;
+            platforms = Platform.InitializePlatforms(1);
+            hazards = Hazard.InitializeHazards(1);
+            collectibles = Collectible.InitializeCollectibles(1);
             SetExitPositionForLevel();
         }
 
@@ -258,6 +307,7 @@ namespace MohawkGame2D
                 {
                     // Final exit: game over screen
                     currentState = gamestate.Gameover;
+                    musicManager.PlayMusic(0);
                 }
 
                 SetExitPositionForLevel(); //Setting The Exit Position for the Level
@@ -344,7 +394,7 @@ namespace MohawkGame2D
 
         private void DrawExit()
         {
-            Draw.FillColor = Color.Red;
+            Draw.FillColor = Color.Green;
             Draw.Rectangle(exitPosition, exitSize);
         }
         private void SetExitPositionForLevel()
@@ -352,16 +402,16 @@ namespace MohawkGame2D
             switch (currentState)
             {
                 case gamestate.Level1:
-                    exitPosition = new Vector2(650, 250);  // Example position for Level 1
+                    exitPosition = new Vector2(650, 250);  
                     break;
                 case gamestate.Level2:
-                    exitPosition = new Vector2(300, 50);  // Example position for Level 2
+                    exitPosition = new Vector2(300, 50);  
                     break;
                 case gamestate.Level3:
-                    exitPosition = new Vector2(600, 300);  // Example position for Level 3
+                    exitPosition = new Vector2(650, 150); 
                     break;
                 default:
-                    exitPosition = new Vector2(740, 500);  // Fallback position
+                    exitPosition = new Vector2(540, 400);  // Fallback position
                     break;
             }
         }
