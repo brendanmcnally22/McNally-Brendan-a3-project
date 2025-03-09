@@ -6,10 +6,7 @@ using MohawkGame2D;
 namespace MohawkGame2D
 {
     public class Game
-    {
-        private Level Level1;
-        private Level Level2;
-        private Level Level3;
+    { 
         enum gamestate // An Enumerator to make sure we Store infomation in these screens 
         {
             Menu,
@@ -36,7 +33,7 @@ namespace MohawkGame2D
 
 
         // Exit
-        private Vector2 exitPosition = new Vector2(720, 420);
+        private Vector2 exitPosition;
         private Vector2 exitSize = new Vector2(40, 40);
 
 
@@ -65,7 +62,7 @@ namespace MohawkGame2D
             musicManager.PlayMusic(0);
 
         // Create other helpers
-        borders = new Borders();
+            borders = new Borders();
             player = new Player();
             platforms = Platform.InitializePlatforms(1);  // Load up them platforms! 
             collectibles = Collectible.InitializeCollectibles(1); // Collectibles
@@ -138,9 +135,10 @@ namespace MohawkGame2D
 
         private void HandleMenuInput()
         {
-            if (Input.IsControllerButtonPressed(0, ControllerButton.RightFaceLeft))
+            if (Input.IsControllerButtonPressed(0, ControllerButton.RightFaceLeft) || Input.IsKeyboardKeyPressed(KeyboardInput.Enter))
             {
                 currentState = gamestate.Level1;
+                SetExitPositionForLevel();
             }
         }
 
@@ -166,6 +164,7 @@ namespace MohawkGame2D
             player.Health = 100;
             player.Position = new Vector2(100, 500);
             currentState = gamestate.Level1;
+            SetExitPositionForLevel();
         }
 
         //--- COLLISIONS ---//
@@ -246,6 +245,9 @@ namespace MohawkGame2D
                     // Final exit: game over screen
                     currentState = gamestate.Gameover;
                 }
+
+                SetExitPositionForLevel(); //Setting The Exit Position for the Level
+
                 if (IsColliding(player.Position, player.Width, player.Height, exitPosition, exitSize))
                 {
                     // Change to the next song when the player touches the exit.
@@ -330,6 +332,24 @@ namespace MohawkGame2D
         {
             Draw.FillColor = Color.Red;
             Draw.Rectangle(exitPosition, exitSize);
+        }
+        private void SetExitPositionForLevel()
+        {
+            switch (currentState)
+            {
+                case gamestate.Level1:
+                    exitPosition = new Vector2(650, 250);  // Example position for Level 1
+                    break;
+                case gamestate.Level2:
+                    exitPosition = new Vector2(740, 100);  // Example position for Level 2
+                    break;
+                case gamestate.Level3:
+                    exitPosition = new Vector2(740, 300);  // Example position for Level 3
+                    break;
+                default:
+                    exitPosition = new Vector2(740, 500);  // Fallback position
+                    break;
+            }
         }
 
         private void DrawUI()

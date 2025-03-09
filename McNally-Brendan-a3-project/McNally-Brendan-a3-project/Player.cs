@@ -13,8 +13,10 @@ namespace MohawkGame2D
 
         // For the trail effect
         private Vector2[] trailPositions;
-        private int trailSize = 50;
+        private int trailSize = 20;
+        private int drawnTrailCount = 20;
         private Color playerColor = Color.Blue;
+        float maxTrailAlpha = 0.5f;
 
         public Player()
         {
@@ -42,9 +44,22 @@ namespace MohawkGame2D
         {
             float moveX = Input.GetControllerAxis(0, ControllerAxis.LeftX);
             Velocity.X = moveX * 5;
+            
+            // Override horizontal movement if keyboard keys are pressed
+            if (Input.IsKeyboardKeyDown(KeyboardInput.A))
+            {
+                moveX = -1f; // Move left
+            }
+            else if (Input.IsKeyboardKeyDown(KeyboardInput.D))
+            {
+                moveX = 1f; // Move right
+            }
 
+            //Apply Horizontal Movement
+
+            Velocity.X = moveX * 5;
             // Jump
-            if (Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) && !IsJumping)
+            if (Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) || Input.IsKeyboardKeyPressed(KeyboardInput.Space) || Input.IsKeyboardKeyPressed(KeyboardInput.Space) && !IsJumping)
             {
                 Velocity.Y = -20;
                 IsJumping = true;
@@ -66,9 +81,9 @@ namespace MohawkGame2D
             Draw.Rectangle(Position, new Vector2(Width, Height));
 
             // Draw the trail effect
-            for (int i = 0; i < trailSize; i++)
+            for (int i = 0; i < drawnTrailCount; i++)
             {
-                float alpha = 1f - (i / (float)trailSize);
+                float alpha = maxTrailAlpha * ( 1f - (i / (float)trailSize));
 
                 // Set color to player's color but with decreasing alpha
                 Draw.FillColor = new ColorF(
