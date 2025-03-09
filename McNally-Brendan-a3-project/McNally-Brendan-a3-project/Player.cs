@@ -72,7 +72,7 @@ namespace MohawkGame2D
             if ((Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) || Input.IsKeyboardKeyPressed(KeyboardInput.Space))
                    && !IsJumping && jumpCooldownTimer <= 0)
             {
-                Velocity.Y = -20;
+                Velocity.Y = -15;
                 IsJumping = true;
                 jumpCooldownTimer = jumpCooldown;  // Reset the cooldown timer
             }

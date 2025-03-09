@@ -32,17 +32,17 @@ namespace MohawkGame2D
                 case 2: //Level two
                     return new Hazard[]
                     {
-                        new Hazard(new Vector2(370,450), new Vector2(50,20)),
-                            new Hazard(new Vector2(300,350), new Vector2(50,20)),
+                        new Hazard(new Vector2(350,470), new Vector2(50,20)),
+                            new Hazard(new Vector2(280,350), new Vector2(50,20)),
                             new Hazard(new Vector2(350, 240), new Vector2(50,20))
                     };
-                    break; 
+                   
                 case 3:
                     return new Hazard[]
                     {
 
                     };
-                    break;
+                    
                 default:
                     return new Hazard[0]; // Returning it so I can stop getting Null issues lol
             }

@@ -1,14 +1,23 @@
 ﻿using MohawkGame2D;
+using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 public class Platform
 {
     public Vector2 Position { get; private set; }
     public Vector2 Size { get; private set; }
+    public Vector2 OriginalPosition { get; private set; }
+
+    // Shake effect parameters.
+    private float shakeAmplitude = 2.0f; // Maximum offset in pixels.
+    private float shakeFrequency = 5.0f; // Oscillation speed.
+    private bool isShaking = false;      // Determines if shaking is active.
 
     public Platform(Vector2 position, Vector2 size)
     {
         Position = position;
+        OriginalPosition = position;
         Size = size;
     }
 
@@ -17,6 +26,32 @@ public class Platform
         Draw.FillColor = Color.Black;
         Draw.Rectangle(Position, Size);
     }
+    public void StartShaking()
+    {
+        isShaking = true;
+    }
+
+    // Call this method to stop the shake effect.
+    public void StopShaking()
+    {
+        isShaking = false;
+        Position = OriginalPosition;
+    }
+    public void Update(float totalTime)
+    {
+        if (isShaking)
+        {
+            // Calculate shake offsets using sine and cosine functions.
+            float offsetX = (float)(Math.Sin(totalTime * shakeFrequency) * shakeAmplitude);
+            float offsetY = (float)(Math.Cos(totalTime * shakeFrequency) * shakeAmplitude);
+            Position = OriginalPosition + new Vector2(offsetX, offsetY);
+        }
+        else
+        {
+            Position = OriginalPosition;
+        }
+    }
+
 
     // Method to initialize platforms for a specific level
     public static Platform[] InitializePlatforms(int level)
@@ -41,12 +76,18 @@ public class Platform
                     new Platform(new Vector2(300,100), new Vector2(100, 50)),
                     new Platform(new Vector2(650,350), new Vector2(100,50))
                 };
-            case 3: // LEVEL THREE!!!!!!!!!!!!!!!!!!!!
-                return new Platform[]
+            case 3: // LEVEL THREE!!!!!!!!
+                Platform[] platforms = new Platform[]
                 {
-                    new Platform(new Vector2(250, 470), new Vector2(120, 45)),
-                    new Platform(new Vector2(500, 420), new Vector2(140, 50))
+                    new Platform(new Vector2(150, 450), new Vector2(100, 50)),
+                    new Platform(new Vector2(150, 350), new Vector2(100, 50)),
+                    new Platform(new Vector2(300, 300), new Vector2(100, 50)),
+                    new Platform(new Vector2(500, 250), new Vector2(50, 50)),
+                    new Platform(new Vector2(600, 200), new Vector2(100, 50)),
+                   
                 };
+                platforms[1].StartShaking();
+                return platforms;
             default:
                 return new Platform[0]; // Return an empty array for invalid level
         }

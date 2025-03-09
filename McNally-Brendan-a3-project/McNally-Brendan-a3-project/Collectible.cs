@@ -32,9 +32,17 @@ namespace MohawkGame2D
                 case 2:
                     return new Collectible[]
                     {
-                        new Collectible(new Vector2(400,300),20)
-                        
-                        };
+                        new Collectible(new Vector2(400,300),20),
+                        new Collectible(new Vector2(630,300),20),
+                        new Collectible(new Vector2(150,350),20)
+
+                    };
+                case 3:
+                    return new Collectible[]
+                    {
+                        new Collectible(new Vector2(50,300),20),
+                        new Collectible(new Vector2(50,300),20)
+                    };
             
                 default:
                     return new Collectible[0]; // Return an empty array if no valid level is specified.

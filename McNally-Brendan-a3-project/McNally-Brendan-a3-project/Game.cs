@@ -28,7 +28,6 @@ namespace MohawkGame2D
        
 
         // Some game variables
-        private bool hasCollected = false;
         private int score = 0;
 
 
@@ -356,7 +355,7 @@ namespace MohawkGame2D
                     exitPosition = new Vector2(650, 250);  // Example position for Level 1
                     break;
                 case gamestate.Level2:
-                    exitPosition = new Vector2(600, 500);  // Example position for Level 2
+                    exitPosition = new Vector2(300, 50);  // Example position for Level 2
                     break;
                 case gamestate.Level3:
                     exitPosition = new Vector2(600, 300);  // Example position for Level 3
