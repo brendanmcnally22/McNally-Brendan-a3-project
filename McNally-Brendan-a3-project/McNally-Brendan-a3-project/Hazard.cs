@@ -27,7 +27,7 @@ namespace MohawkGame2D
                 case 1:
                     return new Hazard[]
                     {
-                        new Hazard(new Vector2(500, 500), new Vector2(50, 50))
+                        new Hazard(new Vector2(350, 380), new Vector2(50, 20))
                     };
                 default:
                     return new Hazard[0]; // Returning it so I can stop getting Null issues lol

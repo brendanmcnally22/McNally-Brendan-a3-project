@@ -26,8 +26,10 @@ public class Platform
             case 1:
                 return new Platform[]
                 {
-                    new Platform(new Vector2(150, 450), new Vector2(100, 50)),
-                    new Platform(new Vector2(300, 400), new Vector2(120, 50))
+                    new Platform(new Vector2(150, 450), new Vector2(100,50)),
+                    new Platform(new Vector2(300, 400), new Vector2(100,50)),
+                    new Platform (new Vector2(450,350), new Vector2(100,50)),
+                    new Platform (new Vector2(600,300), new Vector2(100,50)),
                 };
             case 2:
                 return new Platform[]

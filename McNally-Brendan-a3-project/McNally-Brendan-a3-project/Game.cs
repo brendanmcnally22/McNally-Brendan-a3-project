@@ -246,6 +246,12 @@ namespace MohawkGame2D
                     // Final exit: game over screen
                     currentState = gamestate.Gameover;
                 }
+                if (IsColliding(player.Position, player.Width, player.Height, exitPosition, exitSize))
+                {
+                    // Change to the next song when the player touches the exit.
+                    musicManager.NextSong();
+
+                }
             }
 
         }

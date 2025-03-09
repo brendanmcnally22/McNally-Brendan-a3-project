@@ -69,13 +69,17 @@ namespace MohawkGame2D
             for (int i = 0; i < trailSize; i++)
             {
                 float alpha = 1f - (i / (float)trailSize);
+
+                // Set color to player's color but with decreasing alpha
                 Draw.FillColor = new ColorF(
                     playerColor.R / 255f,
                     playerColor.G / 255f,
                     playerColor.B / 255f,
                     alpha
                 );
-                Draw.Square(trailPositions[i], 10 - i * 0.5f);
+
+                // Draw a rectangle the same size as the player
+                Draw.Rectangle(trailPositions[i], new Vector2(Width, Height));
             }
         }
     }

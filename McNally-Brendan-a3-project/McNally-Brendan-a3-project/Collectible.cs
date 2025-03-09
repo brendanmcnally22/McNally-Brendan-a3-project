@@ -29,6 +29,13 @@ namespace MohawkGame2D
                     {
                         new Collectible(new Vector2(400,300),20)
                     };
+                case 2:
+                    return new Collectible[]
+                    {
+                        new Collectible(new Vector2(400,300),20)
+                        
+                        };
+            
                 default:
                     return new Collectible[0]; // Return an empty array if no valid level is specified.
             }
