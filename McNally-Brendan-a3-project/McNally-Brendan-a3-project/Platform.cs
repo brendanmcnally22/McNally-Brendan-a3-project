@@ -23,7 +23,7 @@ public class Platform
     {
         switch (level)
         {
-            case 1:
+            case 1: // Level ONE! 
                 return new Platform[]
                 {
                     new Platform(new Vector2(100, 450), new Vector2(100,50)),
@@ -31,13 +31,17 @@ public class Platform
                     new Platform (new Vector2(400,350), new Vector2(100,50)),
                     new Platform (new Vector2(550,300), new Vector2(100,50)),
                 };
-            case 2:
+            case 2: // LEVEL TWO! 
                 return new Platform[]
                 {
-                    new Platform(new Vector2(200, 500), new Vector2(130, 40)),
-                    new Platform(new Vector2(400, 350), new Vector2(100, 50))
+                    new Platform(new Vector2(300, 480), new Vector2(100, 50)),
+                    new Platform(new Vector2(300, 350), new Vector2(100, 50)),
+                    new Platform(new Vector2(100,350), new Vector2(100, 50)),
+                    new Platform(new Vector2(500,250), new Vector2(100, 50)),
+                    new Platform(new Vector2(300,100), new Vector2(100, 50)),
+                    new Platform(new Vector2(650,350), new Vector2(100,50))
                 };
-            case 3:
+            case 3: // LEVEL THREE!!!!!!!!!!!!!!!!!!!!
                 return new Platform[]
                 {
                     new Platform(new Vector2(250, 470), new Vector2(120, 45)),

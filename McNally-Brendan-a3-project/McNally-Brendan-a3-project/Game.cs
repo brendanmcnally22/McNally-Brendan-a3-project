@@ -115,8 +115,21 @@ namespace MohawkGame2D
                     platforms = Platform.InitializePlatforms(2);
                     DrawPlatforms(platforms);
                     break;
-                    //level 2 logic! 
+                //level 2 logic! 
 
+                case gamestate.Level3:
+                    player.HandleInput();
+                    player.Update();
+                    ApplyCollisions();
+                    borders.DrawBorders();
+                    player.DrawPlayer();
+                    DrawCollectibles();
+                    DrawHazards();
+                    DrawExit();
+                    DrawUI();
+                    platforms = Platform.InitializePlatforms(3);
+                    DrawPlatforms(platforms);
+                    break;
                 case gamestate.Gameover:
                     DrawGameOverScreen();
                     HandleGameOverInput();
@@ -230,6 +243,7 @@ namespace MohawkGame2D
                     hazards = Hazard.InitializeHazards(2);
                     collectibles = Collectible.InitializeCollectibles(2);
                     player.Position = new Vector2(100, 500); // Reset player starting position if needed
+                    musicManager.NextSong();
                 }
                 else if (currentState == gamestate.Level2)
                 {
@@ -239,6 +253,7 @@ namespace MohawkGame2D
                     hazards = Hazard.InitializeHazards(3);
                     collectibles = Collectible.InitializeCollectibles(3);
                     player.Position = new Vector2(100, 500);
+                    musicManager.NextSong();
                 }
                 else if (currentState == gamestate.Level3)
                 {
@@ -341,10 +356,10 @@ namespace MohawkGame2D
                     exitPosition = new Vector2(650, 250);  // Example position for Level 1
                     break;
                 case gamestate.Level2:
-                    exitPosition = new Vector2(740, 100);  // Example position for Level 2
+                    exitPosition = new Vector2(600, 500);  // Example position for Level 2
                     break;
                 case gamestate.Level3:
-                    exitPosition = new Vector2(740, 300);  // Example position for Level 3
+                    exitPosition = new Vector2(600, 300);  // Example position for Level 3
                     break;
                 default:
                     exitPosition = new Vector2(740, 500);  // Fallback position

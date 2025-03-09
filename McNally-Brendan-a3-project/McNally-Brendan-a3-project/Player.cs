@@ -18,6 +18,10 @@ namespace MohawkGame2D
         private Color playerColor = Color.Blue;
         float maxTrailAlpha = 0.5f;
 
+        // Jump cooldown fields
+        private float jumpCooldown = 0.5f;      // Delay (in seconds) between jumps
+        private float jumpCooldownTimer = 0f;   // Timer that counts down
+
         public Player()
         {
             Position = new Vector2(100, 500);
@@ -25,11 +29,17 @@ namespace MohawkGame2D
             trailPositions = new Vector2[trailSize];
         }
 
-        public void Update()
+        public void Update(float deltaTime = 0.016f)
         {
             // Simple gravity
             Velocity.Y += 1f;
             Position += Velocity;
+
+            // Update jump cooldown timer
+            if (jumpCooldownTimer > 0)
+            {
+                jumpCooldownTimer -= deltaTime;
+            }
 
             // Shift the trail positions
             for (int i = trailSize - 1; i > 0; i--)
@@ -58,11 +68,13 @@ namespace MohawkGame2D
             //Apply Horizontal Movement
 
             Velocity.X = moveX * 5;
-            // Jump
-            if (Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) || Input.IsKeyboardKeyPressed(KeyboardInput.Space) || Input.IsKeyboardKeyPressed(KeyboardInput.Space) && !IsJumping)
+
+            if ((Input.IsControllerButtonPressed(0, ControllerButton.LeftTrigger1) || Input.IsKeyboardKeyPressed(KeyboardInput.Space))
+                   && !IsJumping && jumpCooldownTimer <= 0)
             {
                 Velocity.Y = -20;
                 IsJumping = true;
+                jumpCooldownTimer = jumpCooldown;  // Reset the cooldown timer
             }
         }
 
