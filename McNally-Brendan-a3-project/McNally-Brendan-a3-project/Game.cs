@@ -46,6 +46,8 @@ namespace MohawkGame2D
         private Texture2D level1Background;
         private Texture2D level2Background;
         private Texture2D level3Background;
+        private Texture2D menuScreen;
+        private Texture2D gameOverScreen;
 
         public void Setup()
         {
@@ -57,21 +59,37 @@ namespace MohawkGame2D
             level1Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL1.png");
             level2Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL2.png");
             level3Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL3.png");
+            menuScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-Menu.png");
 
             // Initialize music
             string[] songPaths = {
+
+                "C:\\Users\\brend\\Downloads\\Moonlight Serenade.mp3",
                 "C:\\Users\\brend\\Downloads\\Come as you Are.mp3",
                 "C:\\Users\\brend\\Downloads\\Real Gone.mp3",
                 "C:\\Users\\brend\\Downloads\\The Moment.mp3",
+
+
+            };
+            string[] songTitles = 
+                {
+
+                "Moonlight Serenade",
+                "Come as You Are",
+                "Real Gone", 
+                "The Moment",
                 
             };
-            string[] songTitles = { "Come as You Are", "Real Gone" , "The Moment" };
+
 
             musicManager = new MusicManager(songPaths, songTitles);
-            musicManager.PlayMusic(0);
+         
+                musicManager.PlayMusic(0);
+            
 
 
-           // Create other helpers
+
+            // Create other helpers
 
             borders = new Borders();
             player = new Player();
@@ -90,6 +108,11 @@ namespace MohawkGame2D
             switch (currentState) // Switch to change our current State of the game.
             {
                 case gamestate.Menu:
+
+                    if (musicManager.CurrentSongTitle != "Moonlight Serenade")
+                    {
+                        musicManager.PlayMusic(0);
+                    }
                     DrawMenu();
                     HandleMenuInput();
                     break;
@@ -198,9 +221,18 @@ namespace MohawkGame2D
 
         private void DrawMenu()
         {
-            Draw.FillColor = Color.White;
-            Text.Draw("Welcome", 200, 200);
-            Text.Draw("Press X to Start!", 200, 300);
+            // Draw the menu background image.
+            if (menuScreen != null && menuScreen.Width > 0 && menuScreen.Height > 0)
+            {
+              
+                Graphics.Draw(menuScreen, new Vector2(0, 0));
+            }
+            else
+            {
+               
+                Draw.FillColor = Color.DarkGray;
+                Draw.Rectangle(new Vector2(0, 0), new Vector2(800, 600));
+            }
         }
 
         private void HandleMenuInput()
@@ -209,7 +241,9 @@ namespace MohawkGame2D
             {
                 currentState = gamestate.Level1;
                 SetExitPositionForLevel();
+                musicManager.PlayMusic(1);
             }
+            
         }
 
         private void DrawGameOverScreen()
@@ -296,7 +330,7 @@ namespace MohawkGame2D
             // Exit collision: advance level or end game
             if (Vector2.Distance(player.Position, exitPosition) < 30)
             {
-                if (currentState == gamestate.Level1)
+                if (currentState == gamestate.Level1) // Level 1 Because Menu is 0
                 {
                     // Transition from Level1 to Level2
                     currentState = gamestate.Level2;
@@ -304,7 +338,7 @@ namespace MohawkGame2D
                     hazards = Hazard.InitializeHazards(2);
                     collectibles = Collectible.InitializeCollectibles(2);
                     player.Position = new Vector2(100, 500); // Reset player starting position if needed
-                    musicManager.NextSong();
+                    musicManager.PlayMusic(2);
                 }
                 else if (currentState == gamestate.Level2)
                 {
@@ -314,7 +348,7 @@ namespace MohawkGame2D
                     hazards = Hazard.InitializeHazards(3);
                     collectibles = Collectible.InitializeCollectibles(3);
                     player.Position = new Vector2(100, 500);
-                    musicManager.NextSong();
+                    musicManager.PlayMusic(3);
                 }
                 else if (currentState == gamestate.Level3)
                 {
