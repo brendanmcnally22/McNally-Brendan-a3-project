@@ -42,14 +42,18 @@ namespace MohawkGame2D
         private Collectible[] collectibles;
 
         private float totalElapsedTime = 0;
-        
 
+        private Texture2D level1Background;
+        
 
         public void Setup()
         {
             // Window settings
             Window.SetSize(800, 600);
             Window.SetTitle("Frisson");
+
+
+            level1Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL1.png");
 
             // Initialize music
             string[] songPaths = {
@@ -63,7 +67,8 @@ namespace MohawkGame2D
             musicManager = new MusicManager(songPaths, songTitles);
             musicManager.PlayMusic(0);
 
-        // Create other helpers
+
+           // Create other helpers
 
             borders = new Borders();
             player = new Player();
@@ -93,6 +98,7 @@ namespace MohawkGame2D
                     // Collisions
                     ApplyCollisions();
                     // Drawing
+                    DrawBackground();
                     platforms = Platform.InitializePlatforms(1);
                     DrawPlatforms(platforms);
                     borders.DrawBorders();
@@ -129,6 +135,7 @@ namespace MohawkGame2D
                     DrawUI();
                     platforms = Platform.InitializePlatforms(2);
                     DrawPlatforms(platforms);
+                   
 
                     foreach (Collectible col in collectibles) //collisions
                     {
@@ -413,6 +420,26 @@ namespace MohawkGame2D
                 default:
                     exitPosition = new Vector2(540, 400);  // Fallback position
                     break;
+            }
+        }
+        private void DrawBackground()
+        {
+            Texture2D currentBg = default(Texture2D); 
+            switch (currentState)
+            {
+                case gamestate.Level1:
+                    currentBg = level1Background;
+                    break;
+            }
+            if (currentBg.Width > 0 && currentBg.Height > 0)
+            {
+                Graphics.Draw(currentBg, new Vector2(0, 0));
+            }
+            else
+            {
+                // Fallback: Draw a solid dark gray rectangle
+                Draw.FillColor = Color.DarkGray;
+                Draw.Rectangle(new Vector2(0, 0), new Vector2(800, 600));
             }
         }
 
