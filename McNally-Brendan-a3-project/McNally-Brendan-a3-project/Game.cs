@@ -28,7 +28,7 @@ namespace MohawkGame2D
         private Player player;
        
 
-        // Some game variables
+        // Player Score
         private int score = 0;
 
 
@@ -37,7 +37,7 @@ namespace MohawkGame2D
         private Vector2 exitSize = new Vector2(40, 40);
 
 
-        //Array for Platforms, Hazards and Collectibles
+        // Array for Platforms, Hazards and Collectibles
         private Platform[] platforms = new Platform[10];
         private Hazard[] hazards;
         private Collectible[] collectibles;
@@ -49,6 +49,7 @@ namespace MohawkGame2D
         private Texture2D level3Background;
         private Texture2D menuScreen;
         private Texture2D gameOverScreen;
+        private Texture2D winnerScreen;
 
         public void Setup()
         {
@@ -61,6 +62,8 @@ namespace MohawkGame2D
             level2Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL2.png");
             level3Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL3.png");
             menuScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-Menu.png");
+            gameOverScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-GameOver.png");
+            winnerScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-Winner.png");
 
             // Initialize music
             string[] songPaths = {
@@ -216,6 +219,7 @@ namespace MohawkGame2D
                     break;
 
                 case gamestate.Winner:
+                    DrawWinnerScreen();
                     HandleWinnerInput();
                     break;
 
@@ -253,16 +257,23 @@ namespace MohawkGame2D
 
         private void DrawGameOverScreen()
         {
-            Draw.FillColor = Color.Red;
-            Text.Color = Color.White;
-            Text.Size = 20;
-            Text.Draw("GAME OVER!", 300, 200);
-            Text.Draw("Press X to Restart", 250, 300);
+            if (gameOverScreen != null && gameOverScreen.Width > 0 && gameOverScreen.Height > 0)
+            {
+                // Draw the game over screen texture.
+                Graphics.Draw(gameOverScreen, new Vector2(0, 0));
+            }
         }
-
+        private void DrawWinnerScreen()
+        {
+            if (winnerScreen != null && winnerScreen.Width > 0 && winnerScreen.Height > 0)
+            {
+                // Draw the winner screen texture.
+                Graphics.Draw(winnerScreen, new Vector2(0, 0));
+            }
+        }
         private void HandleGameOverInput()
         {
-            if (Input.IsControllerButtonPressed(0, ControllerButton.RightFaceLeft))
+            if (Input.IsControllerButtonPressed(0, ControllerButton.RightFaceLeft) || Input.IsKeyboardKeyPressed(KeyboardInput.Enter))
             {
                 RestartGame();
             }
@@ -357,7 +368,7 @@ namespace MohawkGame2D
                 }
                 else if (currentState == gamestate.Level3)
                 {
-                    // Final exit: game over screen
+                    // Final exit: Winner!
                     currentState = gamestate.Winner;
                     musicManager.PlayMusic(0);
                 }
@@ -502,14 +513,18 @@ namespace MohawkGame2D
                 Input.IsKeyboardKeyPressed(KeyboardInput.Enter))
                 
             {
+                RestartGame();
                 player.Position = new Vector2(100, 500);
                 player.Health = 100;
-                score = 0; 
+                score = 0;
 
                 currentState = gamestate.Menu;
+               
                 musicManager.PlayMusic(0); // Return to menu music
             }
         }
+
+       
 
         private void DrawUI()
         {

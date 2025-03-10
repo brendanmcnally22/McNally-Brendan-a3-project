@@ -42,7 +42,7 @@ public class Platform
         Position = OriginalPosition;
     }
 
-    public void Update(float totalTime)
+    public void Update(float totalTime = 0.016f)
     {
         if (isShaking)
         {

@@ -31,12 +31,12 @@
             Audio.Play(musicTracks[currentSongIndex]);
         }
 
-        public void NextSong()
+        public void NextSong() // Play the Next Song
         {
             PlayMusic(currentSongIndex + 1);
         }
 
-        public string CurrentSongTitle
+        public string CurrentSongTitle // Get the Current Song Title
         {
             get { return songTitles[currentSongIndex]; }
         }
