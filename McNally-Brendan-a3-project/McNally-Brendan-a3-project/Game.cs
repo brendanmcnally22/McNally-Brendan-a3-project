@@ -13,7 +13,8 @@ namespace MohawkGame2D
             Level1,
             Level2,
             Level3,
-            Gameover
+            Gameover,
+            Winner
         }
         
 
@@ -214,6 +215,10 @@ namespace MohawkGame2D
                     HandleGameOverInput();
                     break;
 
+                case gamestate.Winner:
+                    HandleWinnerInput();
+                    break;
+
             }
         }
 
@@ -309,7 +314,7 @@ namespace MohawkGame2D
                     {
                         player.Health = 0;
                         currentState = gamestate.Gameover;
-                        musicManager.PlayMusic(0);
+                        musicManager.PlayMusic(1);
                     }
                 }
             }
@@ -353,7 +358,7 @@ namespace MohawkGame2D
                 else if (currentState == gamestate.Level3)
                 {
                     // Final exit: game over screen
-                    currentState = gamestate.Gameover;
+                    currentState = gamestate.Winner;
                     musicManager.PlayMusic(0);
                 }
 
@@ -487,6 +492,22 @@ namespace MohawkGame2D
                 // Fallback: Draw a solid dark gray rectangle
                 Draw.FillColor = Color.DarkGray;
                 Draw.Rectangle(new Vector2(0, 0), new Vector2(800, 600));
+            }
+        }
+
+        private void HandleWinnerInput()
+        {
+            
+            if (Input.IsControllerButtonPressed(0, ControllerButton.RightFaceLeft) ||
+                Input.IsKeyboardKeyPressed(KeyboardInput.Enter))
+                
+            {
+                player.Position = new Vector2(100, 500);
+                player.Health = 100;
+                score = 0; 
+
+                currentState = gamestate.Menu;
+                musicManager.PlayMusic(0); // Return to menu music
             }
         }
 
