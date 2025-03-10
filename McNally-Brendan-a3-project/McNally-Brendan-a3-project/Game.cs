@@ -44,7 +44,8 @@ namespace MohawkGame2D
         private float totalElapsedTime = 0;
 
         private Texture2D level1Background;
-        
+        private Texture2D level2Background;
+        private Texture2D level3Background;
 
         public void Setup()
         {
@@ -54,6 +55,8 @@ namespace MohawkGame2D
 
 
             level1Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL1.png");
+            level2Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL2.png");
+            level3Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL3.png");
 
             // Initialize music
             string[] songPaths = {
@@ -127,6 +130,7 @@ namespace MohawkGame2D
                     player.HandleInput();
                     player.Update();
                     ApplyCollisions();
+                    DrawBackground();
                     borders.DrawBorders();
                     player.DrawPlayer();
                     DrawCollectibles();
@@ -157,6 +161,7 @@ namespace MohawkGame2D
                     player.HandleInput();
                     player.Update();
                     ApplyCollisions();
+                    DrawBackground();
                     borders.DrawBorders();
                     player.DrawPlayer();
                     DrawCollectibles();
@@ -270,6 +275,7 @@ namespace MohawkGame2D
                     {
                         player.Health = 0;
                         currentState = gamestate.Gameover;
+                        musicManager.PlayMusic(0);
                     }
                 }
             }
@@ -430,7 +436,14 @@ namespace MohawkGame2D
                 case gamestate.Level1:
                     currentBg = level1Background;
                     break;
-            }
+
+                case gamestate.Level2:
+                    currentBg = level2Background;
+                    break;
+                case gamestate.Level3:
+                    currentBg = level3Background;
+                    break;
+        }
             if (currentBg.Width > 0 && currentBg.Height > 0)
             {
                 Graphics.Draw(currentBg, new Vector2(0, 0));
