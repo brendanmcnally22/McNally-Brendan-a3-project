@@ -58,20 +58,20 @@ namespace MohawkGame2D
             Window.SetTitle("Frisson");
 
 
-            level1Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL1.png");
-            level2Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL2.png");
-            level3Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL3.png");
-            menuScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-Menu.png");
-            gameOverScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-GameOver.png");
-            winnerScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-Winner.png");
+            level1Background = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-LVL1.png");
+            level2Background = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-LVL2.png");
+            level3Background = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-LVL3.png");
+            menuScreen = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-Menu.png");
+            gameOverScreen = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-GameOver.png");
+            winnerScreen = Graphics.LoadTexture("../../../../../Assets/graphics/Frisson-Winner.png");
 
             // Initialize music
             string[] songPaths = {
 
-                "../../../../Assets/music/Moonlight Serenade.mp3",
-                "../../../../Assets/music/Come as you Are.mp3",
-                "../../../../Assets/music/Real Gone.mp3",
-                "../../../../Assets/music/The Moment.mp3",
+                "../../../../../Assets/music/Moonlight Serenade.mp3",
+                "../../../../../Assets/music/Come as you Are.mp3",
+                "../../../../../Assets/music/Real Gone.mp3",
+                "../../../../../Assets/music/The Moment.mp3",
 
 
             };
