@@ -9,7 +9,7 @@ A couple things to note, the player can jump 'underneath' the platform to the to
 This is a game mechanic used to make the game more challenging and fun while also making it more simple to code for myself. 
 Please note to finish Level 2 you MUST use this feature to your advantage to snap to the top of the final platform. 
 
-You can use either WASD or a Controller.
+You can use either WASD or a Controller to move.
 
 Space or Square to Jump! 
 
