@@ -31,7 +31,7 @@ namespace MohawkGame2D
         // Player Score
         private int score = 0;
 
-
+      
         // Exit
         private Vector2 exitPosition;
         private Vector2 exitSize = new Vector2(40, 40);
@@ -58,20 +58,20 @@ namespace MohawkGame2D
             Window.SetTitle("Frisson");
 
 
-            level1Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL1.png");
-            level2Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL2.png");
-            level3Background = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-LVL3.png");
-            menuScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-Menu.png");
-            gameOverScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-GameOver.png");
-            winnerScreen = Graphics.LoadTexture("C:\\Users\\brend\\Downloads\\Frisson-Winner.png");
+            level1Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL1.png");
+            level2Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL2.png");
+            level3Background = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-LVL3.png");
+            menuScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-Menu.png");
+            gameOverScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-GameOver.png");
+            winnerScreen = Graphics.LoadTexture("../../../../Assets/graphics/Frisson-Winner.png");
 
             // Initialize music
             string[] songPaths = {
 
-                "C:\\Users\\brend\\Downloads\\Moonlight Serenade.mp3",
-                "C:\\Users\\brend\\Downloads\\Come as you Are.mp3",
-                "C:\\Users\\brend\\Downloads\\Real Gone.mp3",
-                "C:\\Users\\brend\\Downloads\\The Moment.mp3",
+                "../../../../Assets/music/Moonlight Serenade.mp3",
+                "../../../../Assets/music/Come as you Are.mp3",
+                "../../../../Assets/music/Real Gone.mp3",
+                "../../../../Assets/music/The Moment.mp3",
 
 
             };
@@ -84,14 +84,13 @@ namespace MohawkGame2D
                 "The Moment",
                 
             };
-
+ 
 
             musicManager = new MusicManager(songPaths, songTitles);
          
                 musicManager.PlayMusic(0);
+
             
-
-
 
             // Create other helpers
 
