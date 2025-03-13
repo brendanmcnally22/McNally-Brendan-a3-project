@@ -44,7 +44,8 @@ namespace MohawkGame2D
 
         private float totalElapsedTime = 0;
 
-        private Texture2D level1Background;
+        //Loading in Textures
+        private Texture2D level1Background; 
         private Texture2D level2Background;
         private Texture2D level3Background;
         private Texture2D menuScreen;
@@ -75,6 +76,7 @@ namespace MohawkGame2D
 
 
             };
+            // Titles of The songs
             string[] songTitles = 
                 {
 
@@ -110,7 +112,7 @@ namespace MohawkGame2D
 
             switch (currentState) // Switch to change our current State of the game.
             {
-                case gamestate.Menu:
+                case gamestate.Menu: // Main Menu
 
                     if (musicManager.CurrentSongTitle != "Moonlight Serenade")
                     {
@@ -120,7 +122,7 @@ namespace MohawkGame2D
                     HandleMenuInput();
                     break;
 
-                case gamestate.Level1:
+                case gamestate.Level1: // Level one
                     // Update logic
                     player.HandleInput();
                     player.Update();
@@ -152,7 +154,7 @@ namespace MohawkGame2D
 
                     break;
 
-                case gamestate.Level2:
+                case gamestate.Level2: // Level two
                     player.HandleInput();
                     player.Update();
                     ApplyCollisions();
@@ -212,12 +214,12 @@ namespace MohawkGame2D
 
                     break;
 
-                case gamestate.Gameover:
+                case gamestate.Gameover: //Game Over Screen
                     DrawGameOverScreen();
                     HandleGameOverInput();
                     break;
 
-                case gamestate.Winner:
+                case gamestate.Winner: //Winner Screen
                     DrawWinnerScreen();
                     HandleWinnerInput();
                     break;
