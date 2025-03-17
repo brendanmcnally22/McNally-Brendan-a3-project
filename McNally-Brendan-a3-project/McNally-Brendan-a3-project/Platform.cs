@@ -9,11 +9,7 @@ public class Platform
     public Vector2 Size { get; private set; }
     public Vector2 OriginalPosition { get; private set; }
 
-    // Shake effect parameters.
-    private float shakeAmplitude = 5.0f; // Maximum offset in pixels.
-    private float shakeFrequency = 10.0f; // Oscillation speed.
-    private bool isShaking = false;      // Determines if shaking is active.
-    private bool isMoving = false;
+   
 
     public Platform(Vector2 position, Vector2 size)
     {
@@ -27,42 +23,6 @@ public class Platform
         Draw.FillColor = Color.Black;
         Draw.Rectangle(Position, Size);
     }
-    public void StartShaking()
-    {
-        isShaking = true;
-    }
-    public void StartMoving()
-    {
-        isMoving = true;
-    }
-
-    public void StopMoving()
-    {
-        isMoving = false;
-        Position = OriginalPosition;
-    }
-
-    public void Update(float totalTime = 0.016f)
-    {
-        if (isShaking)
-        {
-            // Calculate shake offsets using sine and cosine functions.
-            float offsetX = (float)(Math.Sin(totalTime * shakeFrequency) * shakeAmplitude);
-            float offsetY = (float)(Math.Cos(totalTime * shakeFrequency) * shakeAmplitude);
-            Position = OriginalPosition + new Vector2(offsetX, offsetY);
-        }
-        else if (isMoving)
-        {
-            // Move horizontally only.
-            float offsetX = (float)(Math.Sin(totalTime * shakeFrequency) * shakeAmplitude);
-            Position = OriginalPosition + new Vector2(offsetX, 0);
-        }
-        else
-        {
-            Position = OriginalPosition;
-        }
-    }
-
 
     // Method to initialize platforms for a specific level
     public static Platform[] InitializePlatforms(int level)
@@ -97,7 +57,7 @@ public class Platform
                     new Platform(new Vector2(600, 200), new Vector2(100, 50)),
                    
                 };
-                platforms[4].StartMoving();
+             
                 return platforms;
             default:
                 return new Platform[0]; // Return an empty array for invalid level

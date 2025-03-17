@@ -147,11 +147,6 @@ namespace MohawkGame2D
                         }
                     }
 
-                    foreach (Platform p in platforms)
-                    {
-                        p.Update(totalElapsedTime);
-                    }
-
                     break;
 
                 case gamestate.Level2: // Level two
@@ -177,11 +172,6 @@ namespace MohawkGame2D
                         }
                     }
 
-                    foreach (Platform p in platforms)
-                    {
-                        p.Update(totalElapsedTime);
-                    }
-
                     break;
                 //level 2 logic! 
 
@@ -205,11 +195,6 @@ namespace MohawkGame2D
                         {
                             col.Update(totalElapsedTime);
                         }
-                    }
-
-                    foreach (Platform p in platforms)
-                    {
-                        p.Update(totalElapsedTime);
                     }
 
                     break;
